@@ -8,7 +8,7 @@ namespace LabFour
         static void Main(string[] args)
         {
             //Console.Write("Please enter the task: ");
-            Task5.Execute();
+            Task8.Encrypt("abcdefghijklmnopqrstuvwxyz");
         }
         
     }
