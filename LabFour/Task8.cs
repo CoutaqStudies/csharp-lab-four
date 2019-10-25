@@ -5,7 +5,9 @@ namespace LabFour
     {
         public static String Encrypt(String input)
         {
-            Console.WriteLine(DecodePolybiusSquare(EncodePolybiusSquare("abcdefgijklmnopqrstuvwxyz")));
+            //Console.WriteLine(DecodePolybiusSquare(EncodePolybiusSquare("fuck you leatherman")));
+            //Console.WriteLine(DecodePolybiusSquare(EncodePolybiusSquare("abcdefghijklmnopqrstuvwxyz")));
+            Console.WriteLine(DecodeGronsfeld(EncodeGronsfeld("GRONSFELD", 2015), 2015));
             return null;
         }
         private static int[] EncodePolybiusSquare(String input)
@@ -30,6 +32,7 @@ namespace LabFour
                 else
                     encoded[i] = 0;
             }
+
             return encoded;
         }
         private static String DecodePolybiusSquare(int[] input)
@@ -37,54 +40,50 @@ namespace LabFour
             String output = "";
            for(int i =0; i < input.Length; i++)
             {
-                Console.WriteLine($"{input[i]} =  {(input[i] / 10) + input[i] % 5-1}");
-                if (input[i] == 0) output += " ";
-                else output += (Char)(64 + (input[i] / 10) + input[i] % 10)-1;
+                if (input[i] == 0)
+                    output += " ";
+                else if(input[i] / 10 + ((input[i] % 10) - 1) * 5<=9)
+                    output += (Char)(96 +input[i]/10+((input[i]%10)-1)*5);
+                else
+                    output += (Char)(96 + input[i] / 10 + ((input[i] % 10) - 1) * 5+1);
             }
             return output;
         }
-       /* private static int[] Gronsfeld(String input, int key)
-        { 
+        private static String EncodeGronsfeld(String input, int key)
+        {
+            String output = "";
             String sKey = key.ToString();
             int length = input.Length;
             while (sKey.Length != input.Length)
             {
-                if (sKey.Length > input.Length) sKey.Remove(input.Length);
+                if (sKey.Length > input.Length)
+                    sKey = sKey.Remove(input.Length);
                 else
-                {
-                    if (input.Length - sKey.Length >= sKey.Length)
-                    {
-
-                    }
-                }
+                    sKey += sKey;
             }
-            string abc = "abcdefghijklmnopqrstuvwxyz", newKey = key, result = "";
-            bool encode = true;
-            int op = encode ? +1 : -1, offset, indexOf = 0;
-            while (newKey.Length < text.Length)
+            for (int i = 0; i<input.Length;i++)
             {
-                newKey += key;
+                output += (char)((char)input[i] +(int)Char.GetNumericValue(sKey[i]));
             }
-            if (newKey.Length > text.Length)
+            return output;
+        }
+        private static String DecodeGronsfeld(String input, int key)
+        {
+            String output = "";
+            String sKey = key.ToString();
+            int length = input.Length;
+            while (sKey.Length != input.Length)
             {
-                newKey = newKey.Substring(0, newKey.Length - (newKey.Length - text.Length));
-            }
-
-            for (int i = 0; i < text.Length; i++)
-            {
-                indexOf = abc.IndexOf(text[i]);
-                if (indexOf != -1)
-                {
-                    offset = abc.IndexOf(text[i]) + (Convert.ToInt32(newKey[i]) - 48) * op;
-                    if (offset > abc.Length)
-                        offset = offset - abc.Length;
-                    else if (offset < 0)
-                        offset = abc.Length + offset;
-                    result += abc[offset];
-                }
+                if (sKey.Length > input.Length)
+                    sKey = sKey.Remove(input.Length);
                 else
-                    result += text[i];
+                    sKey += sKey;
             }
-        }*/
+            for (int i = 0; i < input.Length; i++)
+            {
+                output += (char)((char)input[i] - (int)Char.GetNumericValue(sKey[i]));
+            }
+            return output;
+        }
     }
 }
