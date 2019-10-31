@@ -10,35 +10,24 @@ namespace LabFour
         }
             public static void Execute(){
                 Console.WriteLine("Using char array or string? ");
-                if(Console.ReadLine() == "string")
-                {
+                if(Console.ReadLine().ToLower() == "string")
                     RemoveUsingStringFunctions();
-                }
                 else
-                {
                     RemoveUsingACharArray();
-                }
             }
             static void RemoveUsingACharArray()
             {
                 Console.Write("Please enter your sentence: ");
                 String sentence = Console.ReadLine();
                 List<Char> chars = new List<char>();
-                foreach (char i in sentence)
+                for(int i = 0;i<sentence.Length;i++)
                 {
-                    if (chars.Contains(i))
-                    {
-                        chars.Remove(i);
-                    }
+                    if (chars.Contains(sentence[i]))
+                        chars.Remove(sentence[i]);
                     else
-                    {
-                        chars.Add(i);
-                    }
+                        chars.Add(sentence[i]);
                 }
-                foreach (char i in chars)
-                {
-                    Console.Write(i + " ");
-                }
+                foreach(Char w in chars)Console.Write(w);
             }
             static void RemoveUsingStringFunctions()
             {
@@ -48,13 +37,9 @@ namespace LabFour
                 for (int i = 0; i < sentence.Length; i++)
                 {
                     if (new_sentence.Contains(sentence[i]))
-                    {
                         new_sentence = new_sentence.Remove(new_sentence.IndexOf(sentence[i]));
-                    }
                     else
-                    {
                         new_sentence += sentence[i];
-                    }
                 }
                 Console.Write(new_sentence);
             }
